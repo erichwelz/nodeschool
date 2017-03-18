@@ -4,11 +4,10 @@ let dir = process.argv[2]
 let ext = '.' + process.argv[3]
 
 
-var result = function(error, data) {
+var result = (error, data) => {
   if (error) {
   }
-  console.log('function success')
   console.log(data);
 };
 
-console.log(mymodule(dir, ext, result))
+mymodule(dir, ext, result)
