@@ -1,16 +1,25 @@
 var http = require('http')
 var bl = require('bl')
+// create array if URLs in reverse order so can count down with recursion
+let urls = process.argv.slice(2, 5).reverse()
+let urlsLeft = 2
 
+let results = []
 
-let urls = process.argv.slice(2, 5)
-console.log(urls)
+function callUrl (url) {
+  http.get(url, (res) => {
+    console.log('function called with URL ' + url);
+    res.pipe(bl(
+      (err, data) => {
+      data = data.toString()
+      console.log(data)
+      urlsLeft --
+      if ( urlsLeft >= 0 ) {
+        callUrl(urls[urlsLeft])
+      }
+      })
+    )
+  })
+}
 
-http.get(urls, (res) => {
-  console.log(`Got response: ${res.statusCode}`)
-  res.pipe(bl(
-    (err, data) => {
-    data = data.toString()
-    console.log(data)
-    })
-  )
-})
+callUrl(urls[urlsLeft])
