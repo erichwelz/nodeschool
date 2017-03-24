@@ -6,11 +6,21 @@ var server = http.createServer((req, res) => {
     let urlObj = url.parse(req.url, true)
 
     if ( urlObj.pathname == '/api/parsetime' ) {
-      res.writeHead(200, { 'Content-Type': 'application/json' })
       if ( "iso" in urlObj.query ) {
-        let isoDate = urlObj.query.iso
-        return res.send(isoDate)
+        var result = formatIsoTime(urlObj.query.iso)
       }
     }
+
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify(result))
 })
 server.listen(portNumber)
+
+let formatIsoTime = (timeIn) => {
+  let DateObj = new Date(timeIn)
+  let timeOut = {}
+  timeOut.hour = DateObj.getHours()
+  timeOut.minute = DateObj.getMinutes()
+  timeOut.second = DateObj.getSeconds()
+  return timeOut
+}
