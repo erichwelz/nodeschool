@@ -11,6 +11,12 @@ var server = http.createServer((req, res) => {
       }
     }
 
+    if ( urlObj.pathname == '/api/unixtime' ) {
+      if ( "iso" in urlObj.query ) {
+        var result = formatUnixTime(urlObj.query.iso)
+      }
+    }
+
     res.writeHead(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify(result))
 })
@@ -23,4 +29,9 @@ let formatIsoTime = (timeIn) => {
   timeOut.minute = DateObj.getMinutes()
   timeOut.second = DateObj.getSeconds()
   return timeOut
+}
+
+let formatUnixTime = (timeIn) => {
+  let DateObj = new Date(timeIn)
+  return { DateOBj.getTime()
 }
